@@ -42,7 +42,7 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
     @Inject
     AtpSodaPaymentRepository() {
         try {
-            String UserResponse = createData();
+            String UserResponse = "something";//createData();
             System.out.println(UserResponse);
         } catch (Exception e) {
             e.printStackTrace();
