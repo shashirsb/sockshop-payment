@@ -85,6 +85,8 @@ import org.json.simple.parser.JSONParser;
 import org.apache.commons.lang3.StringUtils;
 import java.time.LocalDateTime;
 
+import io.helidon.examples.sockshop.payment.Err;
+
 
 /**
  * An implementation of {@link io.helidon.examples.sockshop.payment.PaymentRepository}
@@ -188,7 +190,7 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
                             auth.time = aLDT;
                             auth.authorised = Boolean.parseBoolean(jsonObject.get("authorised").toString());
                             auth.message = jsonObject.get("message").toString();
-                            auth.error =jsonObject.get("error");     
+                            auth.error = new Err(jsonObject.get("error").toString());     
         
                             results.add(auth);
                         }
