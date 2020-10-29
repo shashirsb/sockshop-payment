@@ -122,8 +122,8 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
                             auth.orderId = jsonObject.get("orderId").toString();
                             auth.time = jsonObject.get("time");
                             auth.authorised = jsonObject.get("authorised");
-                            auth.message = Float.parseFloat(jsonObject.get("message").toString());
-                            auth.error = Integer.parseInt(jsonObject.get("error"));     
+                            auth.message = jsonObject.get("message").toString();
+                            auth.error = jsonObject.get("error");     
         
                             results.add(auth);
                         }
