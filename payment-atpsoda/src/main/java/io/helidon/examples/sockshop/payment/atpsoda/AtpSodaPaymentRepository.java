@@ -130,7 +130,7 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
 
                 // Insert the document into a collection.
                 col.insert(doc);
-
+                System.out.println("saveAuthorization .... 200OK");
             } catch (OracleException e) {
                 e.printStackTrace();
             } catch (Exception e) {
