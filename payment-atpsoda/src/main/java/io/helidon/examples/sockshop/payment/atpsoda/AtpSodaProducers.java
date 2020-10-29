@@ -13,7 +13,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 
 import io.helidon.config.Config;
-import io.helidon.examples.sockshop.payment.Authorization;
+import io.helidon.examples.sockshop.catalog.Sock;
 
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
@@ -32,6 +32,46 @@ import static java.lang.String.format;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
+//////////
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonArray;
+
+import java.nio.file.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+
+import io.helidon.config.Config;
+import io.helidon.webserver.Routing;
+import io.helidon.webserver.ServerRequest;
+import io.helidon.webserver.ServerResponse;
+import io.helidon.webserver.Service;
+
+import java.io.*;
+import java.util.Properties;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.HashMap;
+import java.util.stream.Stream;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import oracle.soda.rdbms.OracleRDBMSClient;
+import oracle.soda.OracleDatabase;
+import oracle.soda.OracleCursor;
+import oracle.soda.OracleCollection;
+import oracle.soda.OracleDocument;
+import oracle.soda.OracleException;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.ParseException;
+import org.json.simple.parser.JSONParser;
+
 /**
  * CDI support for MongoDB.
  */
@@ -39,84 +79,93 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 @Log
 public class AtpSodaProducers {
 
+    
     /**
-     * Default MongoDB host to connect to.
+     * Initialise Connection object
      */
-    public static final String DEFAULT_HOST = "payment-db";
+    public static Connection conn = null;
 
     /**
-     * Default MongoDB port to connect to.
+     * Initialise OracleDatabase object
      */
-    public static final int DEFAULT_PORT = 27017;
+    public static OracleDatabase db = null;
+
+  
+
+    // /**
+    //  * This gets config from application.yaml on classpath
+    //  * and uses "app" section.
+    //  */
+    // private static final Config CONFIG = Config.create().get("app");
+
+    // /**
+    //  * The config value for the key {@code version}.
+    //  */
+    // private static String version = CONFIG.get("version").asString("1.0.0");
 
     /**
-     * CDI Producer for {@code MongoClient}.
-     *
-     * @param config application configuration, which will be used to read
-     *               the values of a {@code db.host} and {@code db.port}
-     *               configuration properties, if present. If either is not
-     *               present, the defaults defined by the {@link #DEFAULT_HOST}
-     *               and {@link #DEFAULT_PORT} constants will be used.
-     *
-     * @return a {@code MongoClient} instance
+     * In-memory price catalog
      */
-    @Produces
-    @ApplicationScoped
-    public static MongoClient client(Config config) {
-        Config db = config.get("db");
-        return client(db.get("host").asString().orElse(DEFAULT_HOST),
-                      db.get("port").asInt().orElse(DEFAULT_PORT));
+    private static java.util.Map < Integer, Double > prices;
+
+    /**
+     * In-memory product catalog
+     */
+    private static JsonObject catalog;
+
+    /**
+     * database data
+     */
+    private static boolean UseDB = true;
+    private final static String ATP_CONNECT_NAME = "sockshopdb_medium";
+    private final static String ATP_PASSWORD_FILENAME = "atp_password.txt";
+    private final static String WALLET_LOCATION = "/home/opc/Wallet_sockshopdb";
+    private final static String DB_URL = "jdbc:oracle:thin:@" + ATP_CONNECT_NAME + "?TNS_ADMIN=" + WALLET_LOCATION;
+    private final static String DB_USER = "admin";
+    private static String DB_PASSWORD;
+
+
+    public OracleDatabase dbConnect(){
+        try {
+
+            /**
+             * Connect to ATP and verify database connectivity
+             */
+            System.out.println("\n**checking DB catalog");
+
+            // load password from file in wallet location
+            StringBuilder contentBuilder = new StringBuilder();
+            try (Stream<String> stream = Files.lines( Paths.get(WALLET_LOCATION + "/" + ATP_PASSWORD_FILENAME), StandardCharsets.UTF_8)) {
+                    stream.forEach(s -> contentBuilder.append(s).append("\n"));
+                }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            DB_PASSWORD = contentBuilder.toString();
+
+            // set DB properties
+            Properties props = new Properties();
+            props.setProperty("user", DB_USER);
+            props.setProperty("password", DB_PASSWORD);
+
+
+            // Get a JDBC connection to an Oracle instance.
+            conn = DriverManager.getConnection(DB_URL, props);
+
+             // Get an OracleRDBMSClient - starting point of SODA for Java application.
+             OracleRDBMSClient cl = new OracleRDBMSClient();
+
+             // Get a database.
+             db = cl.getDatabase(conn);
+
+            System.out.println("DB Connection established successfully!!!");
+         
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return db;
     }
 
-    /**
-     * CDI Producer for {@code MongoDatabase}.
-     *
-     * @param client the MongoDB client to use
-     *
-     * @return a {@code MongoDatabase} instance
-     */
-    @Produces
-    @ApplicationScoped
-    public static MongoDatabase db(MongoClient client) {
-        return client.getDatabase("payments");
-    }
-
-    /**
-     * CDI Producer for the {@code MongoCollection} that contains payments.
-     *
-     * @param db the MongoDB database to use
-     *
-     * @return a {@code MongoCollection} containing the payments
-     */
-    @Produces
-    @ApplicationScoped
-    public static MongoCollection<Authorization> payments(MongoDatabase db) {
-        return db.getCollection("payments", Authorization.class);
-    }
-
-    // ---- helpers ---------------------------------------------------------
-
-    /**
-     * Create {@code MongoClient} for the specified host and port.
-     *
-     * @param host the MongoDB host to connect to
-     * @param port the MongoDB port to connect to
-     *
-     * @return a {@code MongoClient} instance
-     */
-    static MongoClient client(String host, int port) {
-        log.info(format("Connecting to MongoDB on host %s:%d", host, port));
-        CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
-                                                         fromProviders(PojoCodecProvider.builder()
-                                                                               .automatic(true)
-                                                                               .conventions(Conventions.DEFAULT_CONVENTIONS)
-                                                                               .build()));
-        MongoClientSettings settings = MongoClientSettings.builder()
-                .applicationName("payments")
-                .applyToClusterSettings(
-                        builder -> builder.hosts(Collections.singletonList(new ServerAddress(host, port))))
-                .codecRegistry(pojoCodecRegistry)
-                .build();
-        return MongoClients.create(settings);
-    }
 }
