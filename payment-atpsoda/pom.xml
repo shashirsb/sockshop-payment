@@ -184,13 +184,6 @@
                         <id>make-index</id>
                     </execution>
                 </executions>
-                <configuration>
-                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
-                    <compilerArgs>
-                        <arg>-Werror</arg>
-                        <arg>-verbose</arg>
-                    </compilerArgs>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>io.fabric8</groupId>
@@ -225,6 +218,24 @@
                         <id>remove-it-database</id>
                         <goals>
                             <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <db.host>localhost</db.host>
+                        <db.port>${db.port}</db.port>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
                         </goals>
                     </execution>
                 </executions>
