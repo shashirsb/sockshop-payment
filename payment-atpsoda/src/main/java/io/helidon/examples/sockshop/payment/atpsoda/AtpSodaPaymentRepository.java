@@ -42,7 +42,7 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
     public static OracleDatabase db = asp.dbConnect();
 
     @Inject
-    AtpSodaPRepository() {
+    AtpSodaPaymentRepository() {
         try {
             String UserResponse = createData();
             System.out.println(UserResponse);
