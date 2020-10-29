@@ -63,4 +63,26 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
 
         return results;
     }
+
+    public String createData() {
+        // Create a collection with the name "MyJSONCollection".
+        // This creates a database table, also named "MyJSONCollection", to store the collection.
+
+        try {
+
+            // Create a collection with the name "MyJSONCollection".
+            // This creates a database table, also named "MyJSONCollection", to store the collection.\
+
+            OracleCollection col = this.db.admin().createCollection("payments");
+
+            col.admin().truncate();
+
+
+        } catch (OracleException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "successfully created payments collection !!!";
+    }
 }
