@@ -81,6 +81,7 @@ import org.json.simple.parser.ParseException;
 import org.json.simple.parser.JSONParser;
 
 import org.apache.commons.lang3.StringUtils;
+import java.time.LocalDateTime;
 
 
 /**
@@ -176,10 +177,16 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
         
                             //String orderId, LocalDateTime time, boolean authorised, String message, Err error
                             auth.orderId = jsonObject.get("orderId").toString();
-                            auth.time = jsonObject.get("time");
-                            auth.authorised = jsonObject.get("authorised");
+
+                           // String str = "2020-10-29T14:17:02.216+00:00"; 
+                           String strDatewithTime = jsonObject.get("time").toString();
+                           LocalDateTime aLDT = LocalDateTime.parse(strDatewithTime);
+
+
+                            auth.time = aLDT;
+                            auth.authorised = Boolean.parseBoolean(jsonObject.get("authorised"));
                             auth.message = jsonObject.get("message").toString();
-                            auth.error = jsonObject.get("error");     
+                            auth.error = Err.parse(jsonObject.get("error"));     
         
                             results.add(auth);
                         }

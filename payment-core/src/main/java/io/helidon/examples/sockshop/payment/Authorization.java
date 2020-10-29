@@ -37,33 +37,33 @@ public class Authorization implements Serializable {
      */
     @Id
     @Schema(description = "Order identifier")
-    private String orderId;
+    public String orderId;
 
     /**
      * Time when this payment authorization was created.
      */
     @Id
     @Schema(description = "Time when this payment authorization was created")
-    private LocalDateTime time;
+    public LocalDateTime time;
 
     /**
      * Flag specifying whether the payment was authorized.
      */
     @Schema(description = "Flag specifying whether the payment was authorized")
-    private boolean authorised;
+    public boolean authorised;
 
     /**
      * Approval or rejection message.
      */
     @Schema(description = "Approval or rejection message")
-    private String  message;
+    public String  message;
 
     /**
      * Processing error, if any.
      */
     @Embedded
     @Schema(description = "Processing error, if any")
-    private Err error;
+    public Err error;
 
     @Builder
     Authorization(String orderId, LocalDateTime time, boolean authorised, String message, Err error) {
