@@ -5,7 +5,7 @@
  * http://oss.oracle.com/licenses/upl.
  */
 
-package io.helidon.examples.sockshop.payment.mongo;
+package io.helidon.examples.sockshop.payment.atpsoda;
 
 import java.util.stream.Collectors;
 
@@ -25,10 +25,10 @@ import org.eclipse.microprofile.health.Readiness;
  */
 @Readiness
 @ApplicationScoped
-public class MongoHealthCheck implements HealthCheck {
+public class AtpSodaHealthCheck implements HealthCheck {
 
     @Inject
-    private MongoClient client;
+    private AtpSodaClient client;
 
     @Override
     public HealthCheckResponse call() {

@@ -18,7 +18,6 @@
 
     <modules>
         <module>payment-core</module>
-        <module>payment-mongo</module>
         <module>payment-atpsoda</module>
     </modules>
 

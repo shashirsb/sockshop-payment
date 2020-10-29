@@ -5,7 +5,7 @@
  * http://oss.oracle.com/licenses/upl.
  */
 
-package io.helidon.examples.sockshop.payment.mongo;
+package io.helidon.examples.sockshop.payment.atpsoda;
 
 import javax.annotation.Priority;
 import javax.enterprise.inject.Alternative;
@@ -21,9 +21,9 @@ import static javax.interceptor.Interceptor.Priority.APPLICATION;
 
 @Alternative
 @Priority(APPLICATION + 5)
-public class TestMongoPaymentRepository extends MongoPaymentRepository implements TestPaymentRepository {
+public class TestAtpSodaPaymentRepository extends AtpSodaPaymentRepository implements TestPaymentRepository {
     @Inject
-    TestMongoPaymentRepository(MongoCollection<Authorization> payments) {
+    TestAtpSodaPaymentRepository(AtpSodaCollection<Authorization> payments) {
         super(payments);
     }
 

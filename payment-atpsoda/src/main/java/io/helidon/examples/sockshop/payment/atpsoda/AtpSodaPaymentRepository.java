@@ -5,7 +5,7 @@
  * http://oss.oracle.com/licenses/upl.
  */
 
-package io.helidon.examples.sockshop.payment.mongo;
+package io.helidon.examples.sockshop.payment.atpsoda;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,11 +34,11 @@ import static javax.interceptor.Interceptor.Priority.APPLICATION;
 @Alternative
 @Priority(APPLICATION)
 @Traced
-public class MongoPaymentRepository implements PaymentRepository {
+public class AtpSodaProducers implements PaymentRepository {
     /**
      * Mongo collection used to store payment authorizations.
      */
-    protected MongoCollection<Authorization> payments;
+    protected AtpSodaCollection<Authorization> payments;
 
     /**
      * Construct {@code MongoPaymentRepository} instance.
@@ -46,7 +46,7 @@ public class MongoPaymentRepository implements PaymentRepository {
      * @param payments Mongo collection used to store payment authorizations
      */
     @Inject
-    MongoPaymentRepository(MongoCollection<Authorization> payments) {
+    AtpSodaPaymentRepository(AtpSodaCollection<Authorization> payments) {
         this.payments = payments;
     }
 

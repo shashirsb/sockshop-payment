@@ -5,7 +5,7 @@
  * http://oss.oracle.com/licenses/upl.
  */
 
-package io.helidon.examples.sockshop.payment.mongo;
+package io.helidon.examples.sockshop.payment.atpsoda;
 
 import io.helidon.examples.sockshop.payment.PaymentResourceIT;
 
@@ -13,5 +13,5 @@ import io.helidon.examples.sockshop.payment.PaymentResourceIT;
  * Integration tests for {@link io.helidon.examples.sockshop.payment.PaymentResource},
  * using MongoDB for persistence.
  */
-class MongoPaymentResourceIT extends PaymentResourceIT {
+class AtpSodaPaymentResourceIT extends PaymentResourceIT {
 }
