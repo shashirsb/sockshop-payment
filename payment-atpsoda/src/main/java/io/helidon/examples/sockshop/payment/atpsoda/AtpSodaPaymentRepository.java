@@ -122,7 +122,7 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
 
                 OracleCollection col = this.db.admin().createCollection("payments");
                 String _document = "{\"orderId\":\"" + auth.orderId.toString() + "\",\"time\":\"" + auth.time + "\",\"authorised\":\"" + auth.authorised + "\",\"message\":\"" + auth.message + "\",\"error\":\"" + auth.error + "\"}";
-        
+                System.out.println(_document);
         
                 // Create a JSON document.
                 OracleDocument doc =
