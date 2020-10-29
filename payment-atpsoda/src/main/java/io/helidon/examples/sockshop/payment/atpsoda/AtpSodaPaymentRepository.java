@@ -23,7 +23,8 @@ import com.mongodb.client.MongoCollection;
 
 import org.eclipse.microprofile.opentracing.Traced;
 
-import static com.mongodb.client.model.Filters.eq;
+import io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers;
+
 import static javax.interceptor.Interceptor.Priority.APPLICATION;
 
 /**
@@ -35,32 +36,30 @@ import static javax.interceptor.Interceptor.Priority.APPLICATION;
 @Priority(APPLICATION)
 @Traced
 public class AtpSodaPaymentRepository implements PaymentRepository {
-    /**
-     * Mongo collection used to store payment authorizations.
-     */
-    protected MongoCollection<Authorization> payments;
+    public static AtpSodaProducers asp = new AtpSodaProducers();
+    public static OracleDatabase db = asp.dbConnect();
 
-    /**
-     * Construct {@code MongoPaymentRepository} instance.
-     *
-     * @param payments Mongo collection used to store payment authorizations
-     */
     @Inject
-    AtpSodaPaymentRepository(MongoCollection<Authorization> payments) {
-        this.payments = payments;
+    AtpSodaPaymentRepository() {
+        try {
+            String UserResponse = createData();
+            System.out.println(UserResponse);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void saveAuthorization(Authorization auth) {
-        payments.insertOne(auth);
+        //payments.insertOne(auth);
     }
 
     @Override
     public Collection<? extends Authorization> findAuthorizationsByOrder(String orderId) {
         ArrayList<Authorization> results = new ArrayList<>();
 
-        payments.find(eq("orderId", orderId))
-                .forEach((Consumer<? super Authorization>) results::add);
+        // payments.find(eq("orderId", orderId))
+        //         .forEach((Consumer<? super Authorization>) results::add);
 
         return results;
     }
