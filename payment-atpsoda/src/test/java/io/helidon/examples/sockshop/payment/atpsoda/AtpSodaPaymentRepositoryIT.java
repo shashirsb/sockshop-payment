@@ -10,9 +10,9 @@ package io.helidon.examples.sockshop.payment.atpsoda;
 import io.helidon.examples.sockshop.payment.PaymentRepositoryTest;
 import io.helidon.examples.sockshop.payment.TestPaymentRepository;
 
-import static io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers.client;
-import static io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers.db;
-import static io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers.payments;
+// import static io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers.client;
+// import static io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers.db;
+// import static io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers.payments;
 
 /**
  * Integration tests for {@link io.helidon.examples.sockshop.payment.mongo.MongoPaymentRepository}.
