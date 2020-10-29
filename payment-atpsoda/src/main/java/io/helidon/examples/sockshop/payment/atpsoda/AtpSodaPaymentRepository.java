@@ -110,6 +110,29 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
     @Override
     public void saveAuthorization(Authorization auth) {
         //payments.insertOne(auth);
+       // String orderId, LocalDateTime time, boolean authorised, String message, Err error
+
+
+            try {
+
+                OracleCollection col = this.db.admin().createCollection("payments");
+                String _document = "{\"orderId\":\"" + auth.orderId.toString() + "\",\"time\":\"" + auth.time + "\",\"authorised\":\"" + auth.authorised + "\",\"message\":\"" + auth.message + "\",\"error\":\"" + auth.error + "\"}";
+        
+        
+                // Create a JSON document.
+                OracleDocument doc =
+                    this.db.createDocumentFromString(_document);
+
+                // Insert the document into a collection.
+                col.insert(doc);
+
+            } catch (OracleException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+   
+
     }
 
     @Override
@@ -119,7 +142,61 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
         // payments.find(eq("orderId", orderId))
         //         .forEach((Consumer<? super Authorization>) results::add);
 
-        return results;
+                org.json.simple.JSONObject _jsonObject = new JSONObject();
+                org.json.simple.parser.JSONParser _parser = new JSONParser();
+        
+        
+                try {
+        
+                    // Get a collection with the name "socks".
+                    // This creates a database table, also named "socks", to store the collection.
+                    OracleCollection col = this.db.admin().createCollection("payments");
+        
+                    // Find all documents in the collection.
+                    OracleCursor c = null;
+                    String jsonFormattedString = null;
+                    try {
+        
+                        OracleDocument filterSpec = this.db.createDocumentFromString("{ \"orderId\" : \"" + orderId + "\"}");
+
+                        OracleCursor c = col.find().filter(filterSpec).getCursor();
+        
+                        OracleDocument resultDoc;
+                        while (c.hasNext()) {
+                            Authorization auth = new Authorization();
+        
+        
+                            resultDoc = c.next();
+        
+                            JSONParser parser = new JSONParser();
+        
+                            Object obj = parser.parse(resultDoc.getContentAsString());
+        
+                            JSONObject jsonObject = (JSONObject) obj;
+        
+                            //String orderId, LocalDateTime time, boolean authorised, String message, Err error
+                            auth.orderId = jsonObject.get("orderId").toString();
+                            auth.time = jsonObject.get("time");
+                            auth.authorised = jsonObject.get("authorised");
+                            auth.message = jsonObject.get("message").toString();
+                            auth.error = jsonObject.get("error");     
+        
+                            results.add(auth);
+                        }
+                        
+        
+        
+                    } finally {
+                        // IMPORTANT: YOU MUST CLOSE THE CURSOR TO RELEASE RESOURCES.
+                        if (c != null) c.close();
+                    }
+        
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+        
+                System.out.println("/payments.. findAuthorizationsByOrder GET Request 200OK");
+                return results;
     }
 
     public String createData() {
