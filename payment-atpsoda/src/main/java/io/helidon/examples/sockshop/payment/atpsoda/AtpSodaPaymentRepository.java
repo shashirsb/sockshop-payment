@@ -28,6 +28,8 @@ import static javax.interceptor.Interceptor.Priority.APPLICATION;
 
 ///////////////////
 
+import java.io.Serializable;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Specializes;
@@ -160,7 +162,7 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
         
                         OracleDocument filterSpec = this.db.createDocumentFromString("{ \"orderId\" : \"" + orderId + "\"}");
 
-                        OracleCursor c = col.find().filter(filterSpec).getCursor();
+                        c = col.find().filter(filterSpec).getCursor();
         
                         OracleDocument resultDoc;
                         while (c.hasNext()) {
@@ -184,7 +186,7 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
 
 
                             auth.time = aLDT;
-                            auth.authorised = Boolean.parseBoolean(jsonObject.get("authorised"));
+                            auth.authorised = Boolean.parseBoolean(jsonObject.get("authorised").toString());
                             auth.message = jsonObject.get("message").toString();
                             auth.error = Err.parse(jsonObject.get("error"));     
         
