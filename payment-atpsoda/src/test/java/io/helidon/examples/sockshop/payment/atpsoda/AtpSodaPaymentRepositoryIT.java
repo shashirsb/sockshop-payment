@@ -11,7 +11,7 @@ import io.helidon.examples.sockshop.payment.PaymentRepositoryTest;
 import io.helidon.examples.sockshop.payment.TestPaymentRepository;
 
 import static io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers.client;
-import static io.helidon.examples.sockshop.payment.atsoda.AtpSodaProducers.db;
+import static io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers.db;
 import static io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers.payments;
 
 /**
