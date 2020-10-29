@@ -19,13 +19,69 @@ import javax.inject.Inject;
 import io.helidon.examples.sockshop.payment.Authorization;
 import io.helidon.examples.sockshop.payment.PaymentRepository;
 
-import com.mongodb.client.MongoCollection;
+
 
 import org.eclipse.microprofile.opentracing.Traced;
-
 import io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers;
 
 import static javax.interceptor.Interceptor.Priority.APPLICATION;
+
+///////////////////
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Specializes;
+import javax.inject.Inject;
+
+import org.bson.BsonDocument;
+import org.bson.conversions.Bson;
+import org.eclipse.microprofile.opentracing.Traced;
+
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonArray;
+
+import java.nio.file.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+
+import io.helidon.config.Config;
+import io.helidon.webserver.Routing;
+import io.helidon.webserver.ServerRequest;
+import io.helidon.webserver.ServerResponse;
+import io.helidon.webserver.Service;
+
+import java.io.*;
+import java.util.Properties;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.HashMap;
+import java.util.stream.Stream;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
+import oracle.soda.rdbms.OracleRDBMSClient;
+import oracle.soda.OracleDatabase;
+import oracle.soda.OracleCursor;
+import oracle.soda.OracleCollection;
+import oracle.soda.OracleDocument;
+import oracle.soda.OracleException;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.ParseException;
+import org.json.simple.parser.JSONParser;
+
+import org.apache.commons.lang3.StringUtils;
+
 
 /**
  * An implementation of {@link io.helidon.examples.sockshop.payment.PaymentRepository}
@@ -36,13 +92,15 @@ import static javax.interceptor.Interceptor.Priority.APPLICATION;
 @Priority(APPLICATION)
 @Traced
 public class AtpSodaPaymentRepository implements PaymentRepository {
+    
+    
     public static AtpSodaProducers asp = new AtpSodaProducers();
     public static OracleDatabase db = asp.dbConnect();
 
     @Inject
     AtpSodaPaymentRepository() {
         try {
-            String UserResponse = "something";//createData();
+            String UserResponse = createData();
             System.out.println(UserResponse);
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,13 +123,9 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
     }
 
     public String createData() {
-        // Create a collection with the name "MyJSONCollection".
-        // This creates a database table, also named "MyJSONCollection", to store the collection.
+
 
         try {
-
-            // Create a collection with the name "MyJSONCollection".
-            // This creates a database table, also named "MyJSONCollection", to store the collection.\
 
             OracleCollection col = this.db.admin().createCollection("payments");
 
