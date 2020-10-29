@@ -23,12 +23,12 @@ import static javax.interceptor.Interceptor.Priority.APPLICATION;
 @Priority(APPLICATION + 5)
 public class TestAtpSodaPaymentRepository extends AtpSodaPaymentRepository implements TestPaymentRepository {
     @Inject
-    TestAtpSodaPaymentRepository(AtpSodaCollection<Authorization> payments) {
-        super(payments);
+    TestAtpSodaPaymentRepository(MongoCollection<Authorization> payments) {
+       // super(payments);
     }
 
     @Override
     public void clear() {
-        payments.deleteMany(new BsonDocument());
+        //payments.deleteMany(new BsonDocument());
     }
 }
