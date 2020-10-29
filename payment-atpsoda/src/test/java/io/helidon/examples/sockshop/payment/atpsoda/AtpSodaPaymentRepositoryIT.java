@@ -18,10 +18,11 @@ import io.helidon.examples.sockshop.payment.TestPaymentRepository;
  * Integration tests for {@link io.helidon.examples.sockshop.payment.mongo.MongoPaymentRepository}.
  */
 class AtpSodaPaymentRepositoryIT extends PaymentRepositoryTest {
-    // public TestPaymentRepository getPaymentRepository() {
-    //     String host = System.getProperty("db.host","localhost");
-    //     int    port = Integer.parseInt(System.getProperty("db.port","27017"));
+    public TestPaymentRepository getPaymentRepository() {
+        // String host = System.getProperty("db.host","localhost");
+        // int    port = Integer.parseInt(System.getProperty("db.port","27017"));
 
-    //     return new TestAtpSodaPaymentRepository(payments(db(client(host, port))));
-    // }
+        //return new TestAtpSodaPaymentRepository(payments(db(client(host, port))));
+        return null;
+    }
 }
