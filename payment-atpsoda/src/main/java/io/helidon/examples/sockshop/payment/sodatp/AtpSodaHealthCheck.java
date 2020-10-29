@@ -25,7 +25,7 @@ import org.eclipse.microprofile.health.Readiness;
  */
 @Readiness
 @ApplicationScoped
-public class MongoHealthCheck implements HealthCheck {
+public class AtpSodaHealthCheck implements HealthCheck {
 
     @Inject
     private MongoClient client;

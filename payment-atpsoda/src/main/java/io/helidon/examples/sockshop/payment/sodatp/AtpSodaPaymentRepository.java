@@ -34,7 +34,7 @@ import static javax.interceptor.Interceptor.Priority.APPLICATION;
 @Alternative
 @Priority(APPLICATION)
 @Traced
-public class MongoPaymentRepository implements PaymentRepository {
+public class AtpSodaPaymentRepository implements PaymentRepository {
     /**
      * Mongo collection used to store payment authorizations.
      */
@@ -46,7 +46,7 @@ public class MongoPaymentRepository implements PaymentRepository {
      * @param payments Mongo collection used to store payment authorizations
      */
     @Inject
-    MongoPaymentRepository(MongoCollection<Authorization> payments) {
+    AtpSodaPaymentRepository(MongoCollection<Authorization> payments) {
         this.payments = payments;
     }
 

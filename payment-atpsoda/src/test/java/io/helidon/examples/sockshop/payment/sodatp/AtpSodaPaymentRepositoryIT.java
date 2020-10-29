@@ -5,23 +5,23 @@
  * http://oss.oracle.com/licenses/upl.
  */
 
-package io.helidon.examples.sockshop.payment.mongo;
+package io.helidon.examples.sockshop.payment.atpsoda;
 
 import io.helidon.examples.sockshop.payment.PaymentRepositoryTest;
 import io.helidon.examples.sockshop.payment.TestPaymentRepository;
 
-import static io.helidon.examples.sockshop.payment.mongo.MongoProducers.client;
-import static io.helidon.examples.sockshop.payment.mongo.MongoProducers.db;
-import static io.helidon.examples.sockshop.payment.mongo.MongoProducers.payments;
+import static io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers.client;
+import static io.helidon.examples.sockshop.payment.atsoda.AtpSodaProducers.db;
+import static io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers.payments;
 
 /**
  * Integration tests for {@link io.helidon.examples.sockshop.payment.mongo.MongoPaymentRepository}.
  */
-class MongoPaymentRepositoryIT extends PaymentRepositoryTest {
+class AtpSodaPaymentRepositoryIT extends PaymentRepositoryTest {
     public TestPaymentRepository getPaymentRepository() {
         String host = System.getProperty("db.host","localhost");
         int    port = Integer.parseInt(System.getProperty("db.port","27017"));
 
-        return new TestMongoPaymentRepository(payments(db(client(host, port))));
+        return new TestAtpSodaPaymentRepository(payments(db(client(host, port))));
     }
 }
