@@ -25,29 +25,29 @@ import org.eclipse.microprofile.health.Readiness;
  */
 @Readiness
 @ApplicationScoped
-public class AtpSodaHealthCheck implements HealthCheck {
+public class AtpSodaHealthCheck  {
 
-    @Inject
-    private MongoClient client;
+    // @Inject
+    // private MongoClient client;
 
-    @Override
-    public HealthCheckResponse call() {
-        try {
-            ClusterDescription desc = client.getClusterDescription();
-            ServerDescription server = desc.getServerDescriptions().get(0);
-            return HealthCheckResponse.named("db")
-                    .state(server.isOk())
-                    .withData("server", "MongoDB")
-                    .withData("type", desc.getType().name())
-                    .withData("version", server.getVersion().getVersionList().stream()
-                            .map(Object::toString)
-                            .collect(Collectors.joining(".")))
-                    .build();
-        } catch (Throwable t) {
-            return HealthCheckResponse.named("db")
-                    .down()
-                    .withData("error", t.getMessage())
-                    .build();
-        }
-    }
+    // @Override
+    // public HealthCheckResponse call() {
+    //     try {
+    //         ClusterDescription desc = client.getClusterDescription();
+    //         ServerDescription server = desc.getServerDescriptions().get(0);
+    //         return HealthCheckResponse.named("db")
+    //                 .state(server.isOk())
+    //                 .withData("server", "MongoDB")
+    //                 .withData("type", desc.getType().name())
+    //                 .withData("version", server.getVersion().getVersionList().stream()
+    //                         .map(Object::toString)
+    //                         .collect(Collectors.joining(".")))
+    //                 .build();
+    //     } catch (Throwable t) {
+    //         return HealthCheckResponse.named("db")
+    //                 .down()
+    //                 .withData("error", t.getMessage())
+    //                 .build();
+    //     }
+    // }
 }
