@@ -6,16 +6,9 @@ The Payment Service is implemented as a multi-module project containing the foll
 domain model, the REST service itself, as well as the data repository abstraction and its 
 in-memory implementation;
 
-2. **[payment-coherence](./payment-coherence)** contains the data repository implementation for Coherence backend
+2. **[payment-atpsoda](./payment-atpsoda)** contains the data repository implementation for Oracle ATP JSON (Soda) backend backend
 
-3. **[payment-mongo](./payment-mongo)** contains the data repository implementation for MongoDB 
-backend
 
-4. **[payment-mysql](./payment-mysql)** contains the data repository implementation for MySQL 
-backend (using JPA)
-
-5. **[payment-redis](./payment-redis)** contains the data repository implementation for Redis 
-backend (using Redisson client)
 
 ## API
 
