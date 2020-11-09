@@ -106,7 +106,6 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
     AtpSodaPaymentRepository() {
         try {
             String UserResponse = createData();
-            System.out.println(UserResponse);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -122,7 +121,7 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
 
                 OracleCollection col = this.db.admin().createCollection("payments");
                 String _document = "{\"orderId\":\"" + auth.orderId.toString() + "\",\"time\":\"" + auth.time + "\",\"authorised\":\"" + auth.authorised + "\",\"message\":\"" + auth.message + "\",\"error\":\"" + auth.error + "\"}";
-                System.out.println(_document);
+
         
                 // Create a JSON document.
                 OracleDocument doc =
@@ -178,6 +177,8 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
                             Object obj = parser.parse(resultDoc.getContentAsString());
         
                             JSONObject jsonObject = (JSONObject) obj;
+
+               
         
                             //String orderId, LocalDateTime time, boolean authorised, String message, Err error
                             auth.orderId = jsonObject.get("orderId").toString();
@@ -207,6 +208,7 @@ public class AtpSodaPaymentRepository implements PaymentRepository {
                 }
         
                 System.out.println("/payments.. findAuthorizationsByOrder GET Request 200OK");
+                
                 return results;
     }
 
