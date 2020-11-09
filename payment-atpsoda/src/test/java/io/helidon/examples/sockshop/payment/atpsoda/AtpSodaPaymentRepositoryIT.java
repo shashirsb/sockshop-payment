@@ -5,10 +5,10 @@
  * http://oss.oracle.com/licenses/upl.
  */
 
-package io.helidon.examples.sockshop.carts.atpsoda;
+package io.helidon.examples.sockshop.payment.atpsoda;
 
-import io.helidon.examples.sockshop.carts.PaymentRepositoryTest;
-import io.helidon.examples.sockshop.carts.TestPaymentRepository;
+import io.helidon.examples.sockshop.payment.PaymentRepositoryTest;
+import io.helidon.examples.sockshop.payment.TestPaymentRepository;
 
 // import static io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers.client;
 // import static io.helidon.examples.sockshop.payment.atpsoda.AtpSodaProducers.db;

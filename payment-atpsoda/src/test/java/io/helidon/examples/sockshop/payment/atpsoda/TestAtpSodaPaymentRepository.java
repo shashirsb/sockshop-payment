@@ -5,7 +5,7 @@
  * http://oss.oracle.com/licenses/upl.
  */
 
-package io.helidon.examples.sockshop.carts.atpsoda;
+package io.helidon.examples.sockshop.payment.atpsoda;
 
 import javax.annotation.Priority;
 import javax.enterprise.inject.Alternative;
@@ -13,10 +13,6 @@ import javax.inject.Inject;
 
 import io.helidon.examples.sockshop.payment.Authorization;
 import io.helidon.examples.sockshop.payment.TestPaymentRepository;
-
-
-import com.mongodb.client.MongoCollection;
-import org.bson.BsonDocument;
 
 import static javax.interceptor.Interceptor.Priority.APPLICATION;
 

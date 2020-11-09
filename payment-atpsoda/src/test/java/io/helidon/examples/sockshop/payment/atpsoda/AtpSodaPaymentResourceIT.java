@@ -5,9 +5,9 @@
  * http://oss.oracle.com/licenses/upl.
  */
 
-package io.helidon.examples.sockshop.carts.atpsoda;
+package io.helidon.examples.sockshop.payment.atpsoda;
 
-import io.helidon.examples.sockshop.carts.PaymentResourceIT;
+import io.helidon.examples.sockshop.payment.PaymentResourceIT;
 
 /**
  * Integration tests for {@link io.helidon.examples.sockshop.payment.PaymentResource},
